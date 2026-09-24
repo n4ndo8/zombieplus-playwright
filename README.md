@@ -1,17 +1,23 @@
 <div align="center">
 
-# 🧟 Zombie+ | Automação de Testes
+# 🧟 ZOMBIE+
 
-**Testes end-to-end para uma aplicação de catálogo de filmes com temática zumbi.**
+### Automação de testes · Playwright · JavaScript
+
+**Os zumbis ficam no catálogo. Os bugs entram na mira dos testes.**
+
+Testes end-to-end para os fluxos de cadastro, autenticação e gestão de filmes do Zombie+.
 
 ![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?style=for-the-badge)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-Projeto de estudos em automação de testes, desenvolvido durante o curso da QAx.
+Projeto de estudos desenvolvido durante o curso da **QAx**.
 
-[Cenários](#-cenários-implementados) • [Instalação](#-instalação) • [Execução](#-executando-os-testes) • [Estrutura](#-estrutura-do-projeto)
+**3 frentes de teste** &nbsp; · &nbsp; **Page Object Model** &nbsp; · &nbsp; **Dados via API e SQL**
+
+[Cenários](#cenarios) · [Arquitetura](#arquitetura) · [Instalação](#instalacao) · [Execução](#execucao) · [Relatórios](#relatorios)
 
 </div>
 
@@ -23,7 +29,8 @@ Este repositório reúne os testes automatizados do **Zombie+**, contemplando a 
 
 A organização utiliza **Page Object Model (POM)** para separar as ações de interface dos cenários, além de fixtures personalizadas do Playwright para disponibilizar páginas e componentes aos testes.
 
-> **Em desenvolvimento:** os cenários estão sendo construídos e ajustados durante o curso. A presença de um cenário no repositório não significa que ele esteja passando.
+> [!NOTE]
+> **Projeto em evolução.** Os cenários acompanham o aprendizado do curso. Consulte o [estado atual](#estado-atual) para conhecer os ajustes pendentes.
 
 ## 🛠️ Tecnologias
 
@@ -37,6 +44,8 @@ A organização utiliza **Page Object Model (POM)** para separar as ações de i
 | Docker Compose | Inicialização do banco e do pgAdmin no ambiente local da aplicação |
 | Relatório HTML | Consulta dos resultados das execuções |
 
+<a id="cenarios"></a>
+
 ## 🧪 Cenários implementados
 
 | Funcionalidade | Cenários presentes |
@@ -48,6 +57,32 @@ A organização utiliza **Page Object Model (POM)** para separar as ações de i
 No cenário de e-mail duplicado, uma requisição à API cria o lead antes da tentativa pela interface. No cadastro de filmes, uma instrução SQL remove o registro com o título da fixture antes da execução.
 
 O arquivo de dados contém outros filmes para expansão dos testes; atualmente, o cenário de cadastro utiliza a entrada `create`.
+
+<a id="arquitetura"></a>
+
+## 🧩 Como a automação se conecta
+
+```mermaid
+flowchart LR
+    Specs["Cenários E2E"] --> Fixtures["Fixtures do Playwright"]
+    Fixtures --> Pages["Page Objects e Toast"]
+    Pages --> Web["Zombie+ · Interface"]
+    Web --> API["Zombie+ · API"]
+    Specs -->|"Prepara lead por HTTP"| API
+    Specs --> SQL["executeSQL"]
+    SQL -->|"Prepara dados de filmes"| DB[(PostgreSQL)]
+    API --> DB
+```
+
+| Camada | Responsabilidade | Onde encontrar |
+| --- | --- | --- |
+| Cenários | Descrever ações e resultados esperados de cada fluxo | [`tests/e2e`](tests/e2e) |
+| Page Objects | Centralizar seletores, interações e validações de página | [`tests/pages`](tests/pages) |
+| Fixtures do Playwright | Disponibilizar `page.landing`, `page.login`, `page.movies` e `page.toast` | [`tests/support/index.js`](tests/support/index.js) |
+| Dados de teste | Definir os filmes utilizados nos cenários | [`movies.json`](tests/support/fixtures/movies.json) |
+| Banco de dados | Executar SQL na preparação dos testes | [`database.js`](tests/support/database.js) |
+
+Essa separação permite ajustar uma interação de tela no Page Object e reutilizá-la nos cenários que dependem dela.
 
 ## 📁 Estrutura do projeto
 
@@ -75,6 +110,8 @@ zombieplus/
 └── README.md
 ```
 
+<a id="instalacao"></a>
+
 ## 📦 Instalação
 
 Pré-requisitos:
@@ -92,6 +129,7 @@ npm ci
 npx playwright install chromium
 ```
 
+> [!IMPORTANT]
 > Este repositório contém a automação. O frontend, a API e o `docker-compose.yml` da aplicação são mantidos separadamente e precisam estar disponíveis para executar os testes.
 
 ## 🚀 Iniciando a aplicação local
@@ -157,9 +195,18 @@ Quando os testes rodam diretamente no Windows, o host do banco é `localhost`. P
 
 O ambiente utiliza PostgreSQL local e não depende do ElephantSQL. Atualmente, a conexão é definida no código; o projeto de testes não carrega essas configurações de um arquivo `.env`.
 
+<a id="execucao"></a>
+
 ## ▶️ Executando os testes
 
 Execute os comandos a partir da raiz **deste repositório de testes**, com a aplicação e o banco disponíveis.
+
+**Primeira execução?** Confira os quatro pontos abaixo:
+
+- [ ] PostgreSQL iniciado e banco `zombieplus` preparado.
+- [ ] API disponível em `localhost:3333`.
+- [ ] Frontend disponível em `localhost:3000`.
+- [ ] Dependências e Chromium instalados no projeto de testes.
 
 ```bash
 # Executar todos os cenários
@@ -189,6 +236,8 @@ Para filtrar pelo nome de um teste:
 npx playwright test -g "deve cadastrar um lead na fila de espera"
 ```
 
+<a id="relatorios"></a>
+
 ## 📊 Relatórios e configuração
 
 Depois de uma execução, abra o relatório HTML:
@@ -209,6 +258,8 @@ O servidor da aplicação deve ser iniciado manualmente: a opção `webServer` e
 
 Os diretórios `playwright-report/`, `test-results/` e `node_modules/` são ignorados pelo Git.
 
+<a id="estado-atual"></a>
+
 ## 🚧 Estado atual
 
 Há ajustes pendentes no fluxo de login e de filmes:
@@ -221,20 +272,37 @@ Esses pontos podem impedir a conclusão dos cenários correspondentes e fazem pa
 
 ## 💡 Problemas comuns
 
+<details>
+<summary><strong>Comandos, caminhos e terminais no Windows</strong></summary>
+
 | Sintoma | O que verificar |
 | --- | --- |
 | Git Bash não encontra `C:\QAx\...` | Use o formato `/c/QAx/...` nos comandos `cd`. |
 | `no configuration file provided` | Execute o Compose na pasta da aplicação que contém `docker-compose.yml`. |
 | PowerShell bloqueia `npm.ps1` | Use `npm.cmd` e `npx.cmd` no lugar de `npm` e `npx`. |
+
+</details>
+
+<details>
+<summary><strong>Aplicação, API e conexão com o banco</strong></summary>
+
+| Sintoma | O que verificar |
+| --- | --- |
 | Navegador não abre a aplicação | Confira se o frontend está iniciado na porta 3000. |
 | Requisições à API falham | Confira se a API está iniciada na porta 3333 e consegue acessar o banco. |
 | Conexão PostgreSQL recusada | Verifique o Docker, o contêiner e o mapeamento da porta 5432. |
 | Banco ou tabela inexistente | Prepare a estrutura e os dados iniciais seguindo as instruções da aplicação. |
 
+</details>
+
 ---
 
 <div align="center">
 
-🧟 **Zombie+ — praticando qualidade de software, um cenário por vez.**
+**Do primeiro clique à preparação do banco.**
+
+Um projeto para praticar automação e tornar o comportamento da aplicação verificável.
+
+🧟 &nbsp; JavaScript · Playwright · PostgreSQL
 
 </div>
