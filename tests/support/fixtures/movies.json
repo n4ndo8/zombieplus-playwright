@@ -1,0 +1,82 @@
+{
+    "create": {
+        "title": "Guerra Mundial Z",
+        "overview": "Um ex-investigador da ONU percorre o mundo em busca de uma maneira de conter uma pandemia zumbi que ameaça a humanidade.",
+        "company": "Paramount Pictures",
+        "realease_year": 2013,
+        "featured": false,
+        "cover": "images/guerra-mundial-z.png"
+    },
+    "zumbilandia": {
+        "title": "Zumbilândia",
+        "overview": "Um jovem cauteloso se une a três sobreviventes para atravessar os Estados Unidos após um surto transformar a população em zumbis.",
+        "company": "Sony Pictures Releasing",
+        "realease_year": 2009,
+        "featured": false,
+        "cover": "images/zumbilandia.png"
+    },
+    "zumbilandia_atire_duas_vezes": {
+        "title": "Zumbilândia: Atire Duas Vezes",
+        "overview": "Quatro sobreviventes enfrentam zumbis mais evoluídos e encontram novos companheiros enquanto lidam com conflitos dentro do grupo.",
+        "company": "Sony Pictures Releasing",
+        "realease_year": 2019,
+        "featured": false,
+        "cover": "images/zumbilandia-atire-duas-vezes.png"
+    },
+    "todo_mundo_quase_morto": {
+        "title": "Todo Mundo Quase Morto",
+        "overview": "Um vendedor tenta salvar a namorada e a mãe durante uma invasão zumbi em Londres, contando com a ajuda de seu melhor amigo.",
+        "company": "Universal Pictures",
+        "realease_year": 2004,
+        "featured": false,
+        "cover": "images/todo-mundo-quase-morto.png"
+    },
+    "madrugada_dos_mortos": {
+        "title": "Madrugada dos Mortos",
+        "overview": "Sobreviventes de uma epidemia zumbi se refugiam em um shopping e precisam trabalhar juntos para escapar do cerco dos mortos-vivos.",
+        "company": "Universal Pictures",
+        "realease_year": 2004,
+        "featured": false,
+        "cover": "images/madrugada-dos-mortos.png"
+    },
+    "a_noite_dos_mortos_vivos": {
+        "title": "A Noite dos Mortos-Vivos",
+        "overview": "Um grupo de desconhecidos se abriga em uma casa isolada enquanto mortos-vivos cercam o local e conflitos internos ameaçam sua sobrevivência.",
+        "company": "Continental Distributing",
+        "realease_year": 1968,
+        "featured": false,
+        "cover": "images/a-noite-dos-mortos-vivos.png"
+    },
+    "terra_dos_mortos": {
+        "title": "Terra dos Mortos",
+        "overview": "Em um mundo dominado por zumbis, sobreviventes vivem em uma cidade fortificada marcada pela desigualdade enquanto os mortos começam a se organizar.",
+        "company": "Universal Pictures",
+        "realease_year": 2005,
+        "featured": false,
+        "cover": "images/terra-dos-mortos.png"
+    },
+    "invasao_zumbi": {
+        "title": "Invasão Zumbi",
+        "overview": "Um pai e sua filha embarcam em um trem para Busan e precisam sobreviver quando uma infecção transforma passageiros em zumbis.",
+        "company": "Next Entertainment World",
+        "realease_year": 2016,
+        "featured": false,
+        "cover": "images/invasao-zumbi.png"
+    },
+    "resident_evil_o_hospede_maldito": {
+        "title": "Resident Evil: O Hóspede Maldito",
+        "overview": "Uma equipe entra em um laboratório subterrâneo após a liberação de um vírus que transforma funcionários em mortos-vivos e cria criaturas perigosas.",
+        "company": "Screen Gems",
+        "realease_year": 2002,
+        "featured": false,
+        "cover": "images/resident-evil-o-hospede-maldito.png"
+    },
+    "meu_namorado_e_um_zumbi": {
+        "title": "Meu Namorado é um Zumbi",
+        "overview": "Um jovem zumbi desenvolve sentimentos por uma humana, iniciando uma transformação que pode mudar a relação entre os vivos e os mortos.",
+        "company": "Summit Entertainment",
+        "realease_year": 2013,
+        "featured": false,
+        "cover": "images/meu-namorado-e-um-zumbi.png"
+    }
+}
