@@ -4,16 +4,16 @@
         "overview": "Um ex-investigador da ONU percorre o mundo em busca de uma maneira de conter uma pandemia zumbi que ameaça a humanidade.",
         "company": "Paramount Pictures",
         "realease_year": 2013,
-        "featured": false,
-        "cover": "images/guerra-mundial-z.png"
+        "featured": true,
+        "cover": "/covers/movies/wwz.png"
     },
-    "zumbilandia": {
+    "duplicate": {
         "title": "Zumbilândia",
         "overview": "Um jovem cauteloso se une a três sobreviventes para atravessar os Estados Unidos após um surto transformar a população em zumbis.",
         "company": "Sony Pictures Releasing",
         "realease_year": 2009,
         "featured": false,
-        "cover": "images/zumbilandia.png"
+        "cover": "/covers/movies/zumbilandia.jpg"
     },
     "zumbilandia_atire_duas_vezes": {
         "title": "Zumbilândia: Atire Duas Vezes",
