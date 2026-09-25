@@ -1,4 +1,4 @@
-const { test } = require('../support/index')
+const { test, expect } = require('../support/index')
 
 const data = require('../support/fixtures/movies.json')
 const { executeSQL } = require('../support/database')
@@ -15,9 +15,9 @@ test('deve poder cadastrar um novo filme', async ({ page }) => {
     await page.toast.containText('Cadastro realizado com sucesso!')
 })
 
-
-test('não deve cadastrar qunado o titulo é duplicado', async ({ page }) => {
+test('não deve cadastrar quando o titulo é duplicado', async ({ page }) => {
     const movie = data.duplicate
+    await request.api.postMovie(movie)
 
     await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin')
     await page.movies.create(movie)
