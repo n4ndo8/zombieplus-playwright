@@ -1,10 +1,9 @@
 const { test, expect } = require('../support/index')
-
 const data = require('../support/fixtures/movies.json')
 const { executeSQL } = require('../support/database')
 const { request } = require('node:http')
 
-test.beforeAll(async () => {
+test.beforeEach(async () => {
     await executeSQL('DELETE from movies')
 })
 
@@ -49,4 +48,20 @@ test('não deve cadastrar quando os campos obrigatórios não são preenchidos',
         'Campo obrigatório',
         'Campo obrigatório'
     ])
+})
+
+test('deve realizar busca pelo termo zumbi', async ({ page, request }) => {
+    const movies = data.search
+
+    await request.api.setToken()
+
+    for (const movie of movies.data) {
+        await request.api.postMovie(movie)
+    }
+
+    await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin')
+    await page.movies.search(movies.input)
+
+    const rows = page.getByRole('row')
+    await expect(rows).toContainText(movies.outputs)
 })

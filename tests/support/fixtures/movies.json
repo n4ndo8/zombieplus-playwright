@@ -23,60 +23,38 @@
         "featured": false,
         "cover": "/covers/movies/mortos-vivos.jpg"
     },
-    "todo_mundo_quase_morto": {
-        "title": "Todo Mundo Quase Morto",
-        "overview": "Um vendedor tenta salvar a namorada e a mãe durante uma invasão zumbi em Londres, contando com a ajuda de seu melhor amigo.",
-        "company": "Universal Pictures",
-        "release_year": 2004,
-        "featured": false,
-        "cover": "images/todo-mundo-quase-morto.png"
-    },
-    "madrugada_dos_mortos": {
-        "title": "Madrugada dos Mortos",
-        "overview": "Sobreviventes de uma epidemia zumbi se refugiam em um shopping e precisam trabalhar juntos para escapar do cerco dos mortos-vivos.",
-        "company": "Universal Pictures",
-        "release_year": 2004,
-        "featured": false,
-        "cover": "images/madrugada-dos-mortos.png"
-    },
-    "a_noite_dos_mortos_vivos": {
-        "title": "A Noite dos Mortos-Vivos",
-        "overview": "Um grupo de desconhecidos se abriga em uma casa isolada enquanto mortos-vivos cercam o local e conflitos internos ameaçam sua sobrevivência.",
-        "company": "Continental Distributing",
-        "release_year": 1968,
-        "featured": false,
-        "cover": "images/a-noite-dos-mortos-vivos.png"
-    },
-    "terra_dos_mortos": {
-        "title": "Terra dos Mortos",
-        "overview": "Em um mundo dominado por zumbis, sobreviventes vivem em uma cidade fortificada marcada pela desigualdade enquanto os mortos começam a se organizar.",
-        "company": "Universal Pictures",
-        "release_year": 2005,
-        "featured": false,
-        "cover": "images/terra-dos-mortos.png"
-    },
-    "invasao_zumbi": {
-        "title": "Invasão Zumbi",
-        "overview": "Um pai e sua filha embarcam em um trem para Busan e precisam sobreviver quando uma infecção transforma passageiros em zumbis.",
-        "company": "Next Entertainment World",
-        "release_year": 2016,
-        "featured": false,
-        "cover": "images/invasao-zumbi.png"
-    },
-    "resident_evil_o_hospede_maldito": {
-        "title": "Resident Evil: O Hóspede Maldito",
-        "overview": "Uma equipe entra em um laboratório subterrâneo após a liberação de um vírus que transforma funcionários em mortos-vivos e cria criaturas perigosas.",
-        "company": "Screen Gems",
-        "release_year": 2002,
-        "featured": false,
-        "cover": "images/resident-evil-o-hospede-maldito.png"
-    },
-    "meu_namorado_e_um_zumbi": {
-        "title": "Meu Namorado é um Zumbi",
-        "overview": "Um jovem zumbi desenvolve sentimentos por uma humana, iniciando uma transformação que pode mudar a relação entre os vivos e os mortos.",
-        "company": "Summit Entertainment",
-        "release_year": 2013,
-        "featured": false,
-        "cover": "images/meu-namorado-e-um-zumbi.png"
+    "search": {
+        "input": "zumbi",
+        "outputs": [
+            "Zumbilândia",
+            "Invasão Zumbi",
+            "Meu Namorado é um Zumbi"
+        ],
+        "data": [
+            {
+                "title": "Zumbilândia",
+                "overview": "Um jovem cauteloso se une a três sobreviventes para atravessar os Estados Unidos após um surto transformar a população em zumbis.",
+                "company": "Sony Pictures",
+                "release_year": 2009,
+                "featured": false,
+                "cover": "/covers/movies/zumbilandia.jpg"
+            },
+            {
+                "title": "Invasão Zumbi",
+                "overview": "Um pai e sua filha embarcam em um trem para Busan e precisam sobreviver quando uma infecção transforma passageiros em zumbis.",
+                "company": "Universal Pictures",
+                "release_year": 2016,
+                "featured": false,
+                "cover": "images/invasao-zumbi.png"
+            },
+            {
+                "title": "Meu Namorado é um Zumbi",
+                "overview": "Um jovem zumbi desenvolve sentimentos por uma humana, iniciando uma transformação que pode mudar a relação entre os vivos e os mortos.",
+                "company": "Fox Entertainment",
+                "release_year": 2013,
+                "featured": false,
+                "cover": "images/meu-namorado-e-um-zumbi.png"
+            }
+        ]
     }
 }
