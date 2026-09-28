@@ -1,0 +1,61 @@
+{
+    "create": {
+        "title": "Sobreviventes do Amanhã",
+        "overview": "Serie ficticia para validar o catalogo de TV.",
+        "company": "Netflix",
+        "release_year": 2020,
+        "seasons": 2,
+        "featured": true,
+        "cover": "/covers/movies/wwz.png"
+    },
+    "to_remove": {
+        "title": "Ultimo Refugio",
+        "overview": "Serie ficticia para validar o catalogo de TV.",
+        "company": "Netflix",
+        "release_year": 2020,
+        "seasons": 2,
+        "featured": false
+    },
+    "duplicate": {
+        "title": "Cidade dos Mortos",
+        "overview": "Serie ficticia para validar o catalogo de TV.",
+        "company": "Netflix",
+        "release_year": 2020,
+        "seasons": 2,
+        "featured": false,
+        "cover": "/covers/movies/wwz.png"
+    },
+    "search": {
+        "input": "zumbi",
+        "outputs": [
+            "Apocalipse Zumbi",
+            "Diario de um Zumbi"
+        ],
+        "data": [
+            {
+                "title": "Apocalipse Zumbi",
+                "overview": "Serie ficticia para validar o catalogo de TV.",
+                "company": "Netflix",
+                "release_year": 2020,
+                "seasons": 2,
+                "featured": false
+            },
+            {
+                "title": "Diario de um Zumbi",
+                "overview": "Serie ficticia para validar o catalogo de TV.",
+                "company": "Netflix",
+                "release_year": 2021,
+                "seasons": 2,
+                "featured": false
+            },
+            {
+                "title": "Refugio Noturno",
+                "overview": "Serie ficticia para validar o catalogo de TV.",
+                "company": "Netflix",
+                "release_year": 2022,
+                "seasons": 2,
+                "featured": false
+            }
+        ]
+    }
+}

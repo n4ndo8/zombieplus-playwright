@@ -6,6 +6,11 @@ export class Popup {
         this.page = page
     }
 
+    async close() {
+        await this.page.getByRole('button', { name: 'Ok', exact: true }).click()
+        await expect(this.page.locator('.swal2-html-container')).toBeHidden()
+    }
+
     async haveText(message) {
         const element = this.page.locator('.swal2-html-container')
 
