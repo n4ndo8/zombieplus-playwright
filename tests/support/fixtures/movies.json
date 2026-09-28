@@ -15,13 +15,13 @@
         "featured": false,
         "cover": "/covers/movies/zumbilandia.jpg"
     },
-    "zumbilandia_atire_duas_vezes": {
-        "title": "Zumbilândia: Atire Duas Vezes",
-        "overview": "Quatro sobreviventes enfrentam zumbis mais evoluídos e encontram novos companheiros enquanto lidam com conflitos dentro do grupo.",
-        "company": "Sony Pictures Releasing",
-        "release_year": 2019,
+    "to_remove": {
+        "title": "A Noite dos Mortos-Vivos",
+        "overview": "Um grupo de desconhecidos se abriga em uma casa isolada enquanto mortos-vivos cercam o local e conflitos internos ameaçam sua sobrevivência.",
+        "company": "Universal Pictures",
+        "release_year": 1968,
         "featured": false,
-        "cover": "images/zumbilandia-atire-duas-vezes.png"
+        "cover": "/covers/movies/mortos-vivos.jpg"
     },
     "todo_mundo_quase_morto": {
         "title": "Todo Mundo Quase Morto",

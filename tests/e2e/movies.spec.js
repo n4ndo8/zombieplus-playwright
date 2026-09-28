@@ -2,6 +2,7 @@ const { test, expect } = require('../support/index')
 
 const data = require('../support/fixtures/movies.json')
 const { executeSQL } = require('../support/database')
+const { request } = require('node:http')
 
 test.beforeAll(async () => {
     await executeSQL('DELETE from movies')
@@ -13,6 +14,16 @@ test('deve poder cadastrar um novo filme', async ({ page }) => {
     await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin')
     await page.movies.create(movie)
     await page.popup.haveText(`O filme '${movie.title}' foi adicionado ao catálogo.`)
+})
+
+test('deve poder remover um filme', async ({ page, request }) => {
+    const movie = data.to_remove
+    await request.api.setToken()
+    await request.api.postMovie(movie)
+
+    await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin')
+    await page.movies.remove(movie.title)
+    await page.popup.haveText('Filme removido com sucesso.')
 })
 
 test('não deve cadastrar quando o titulo é duplicado', async ({ page, request }) => {
