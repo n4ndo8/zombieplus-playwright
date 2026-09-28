@@ -6,7 +6,7 @@
 
 **Os zumbis ficam no catálogo. Os bugs entram na mira dos testes.**
 
-Testes end-to-end para os fluxos de cadastro, autenticação e gestão de filmes do Zombie+.
+Testes end-to-end para a fila de espera, autenticação e gestão de filmes e séries de TV do Zombie+.
 
 ![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?style=for-the-badge)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
@@ -15,9 +15,9 @@ Testes end-to-end para os fluxos de cadastro, autenticação e gestão de filmes
 
 Projeto de estudos desenvolvido durante o curso da **QAx**.
 
-**3 frentes de teste** &nbsp; · &nbsp; **Page Object Model** &nbsp; · &nbsp; **Dados via API e SQL**
+**22 cenários em 4 frentes de teste** &nbsp; · &nbsp; **Page Object Model** &nbsp; · &nbsp; **Dados via API e SQL**
 
-[Cenários](#cenarios) · [Arquitetura](#arquitetura) · [Instalação](#instalacao) · [Execução](#execucao) · [Relatórios](#relatorios)
+[Cenários](#cenarios) · [Novidades](#novidades) · [Arquitetura](#arquitetura) · [Massa de teste](#massa-de-teste) · [Instalação](#instalacao) · [Execução](#execucao) · [Relatórios](#relatorios)
 
 </div>
 
@@ -25,12 +25,12 @@ Projeto de estudos desenvolvido durante o curso da **QAx**.
 
 ## 🎯 Sobre o projeto
 
-Este repositório reúne os testes automatizados do **Zombie+**, contemplando a fila de espera, a autenticação administrativa e o cadastro de filmes. O objetivo é praticar validações de interface, preparação de dados por API e acesso ao banco de dados em testes end-to-end.
+Este repositório reúne os testes automatizados do **Zombie+**, contemplando a fila de espera, a autenticação administrativa e o gerenciamento de filmes e séries de TV. O objetivo é praticar validações de interface, preparação de dados por API e acesso ao banco de dados em testes end-to-end.
 
 A organização utiliza **Page Object Model (POM)** para separar as ações de interface dos cenários, além de fixtures personalizadas do Playwright para disponibilizar páginas e componentes aos testes.
 
 > [!NOTE]
-> **Projeto em evolução.** Os cenários acompanham o aprendizado do curso. Consulte o [estado atual](#estado-atual) para conhecer os ajustes pendentes.
+> **Projeto em evolução.** Os cenários acompanham o aprendizado do curso. Consulte o [estado atual](#estado-atual) para conhecer a última validação registrada e os limites da cobertura.
 
 ## 🛠️ Tecnologias
 
@@ -48,15 +48,32 @@ A organização utiliza **Page Object Model (POM)** para separar as ações de i
 
 ## 🧪 Cenários implementados
 
-| Funcionalidade | Cenários presentes |
-| --- | --- |
-| Fila de espera | Cadastro válido, e-mail duplicado, e-mail inválido, nome vazio, e-mail vazio e ambos os campos vazios |
-| Login administrativo | Login válido, senha incorreta, e-mail inválido, e-mail vazio, senha vazia e ambos os campos vazios |
-| Filmes | Cadastro de um novo filme com preparação prévia no banco |
+| Funcionalidade | Quantidade | Cenários presentes |
+| --- | --- | --- |
+| [Fila de espera](tests/e2e/leads.spec.js) | 6 | Cadastro válido, e-mail duplicado, e-mail inválido, nome vazio, e-mail vazio e ambos os campos vazios |
+| [Login administrativo](tests/e2e/login.spec.js) | 6 | Login válido, senha incorreta, e-mail inválido, e-mail vazio, senha vazia e ambos os campos vazios |
+| [Filmes](tests/e2e/movies.spec.js) | 5 | Cadastro, remoção, título duplicado, campos obrigatórios e busca pelo termo “zumbi” |
+| [Séries de TV](tests/e2e/tvshows.spec.js) | 5 | Cadastro, remoção, título duplicado, campos obrigatórios e busca pelo termo “zumbi” |
 
-No cenário de e-mail duplicado, uma requisição à API cria o lead antes da tentativa pela interface. No cadastro de filmes, uma instrução SQL remove o registro com o título da fixture antes da execução.
+No cenário de e-mail duplicado, uma requisição à API cria o lead antes da tentativa pela interface. Nos testes de filmes e séries, a API prepara os registros necessários para os cenários de remoção, duplicidade e busca.
 
-O arquivo de dados contém outros filmes para expansão dos testes; atualmente, o cenário de cadastro utiliza a entrada `create`.
+As séries incluem o campo **Temporadas**. O teste de campos vazios verifica os cinco alertas, incluindo `Campo obrigatório (apenas números)`. Após cadastrar ou remover uma série, os testes fecham o popup e verificam sua presença ou ausência na listagem.
+
+A busca de séries começa com três registros: dois com “zumbi” no título e um sem o termo. O teste confere a lista inicial e depois exige exatamente os dois resultados esperados, verificando também a exclusão do registro que não corresponde à busca.
+
+<a id="novidades"></a>
+
+## ✨ Novidades desde a última edição
+
+- **Filmes:** ampliação de um cenário de cadastro para cinco cenários de gerenciamento e busca.
+- **Séries de TV:** nova suíte com cinco cenários, actions próprias, massa JSON e preparação via `postTvShow()`.
+- **Autenticação da API:** chamada explícita a `request.api.setToken()` antes de preparar filmes e séries.
+- **Diagnóstico de falhas:** status HTTP e corpo da resposta nas asserções de consulta de empresas e cadastro; mensagem específica quando a empresa não é encontrada.
+- **Massa consistente:** campo `release_year` padronizado e nome `Sony Pictures` alinhado ao cadastro usado pela API no cenário de duplicidade.
+- **Preparação assíncrona:** uso de `for...of` com `await` para aguardar todos os cadastros antes de navegar e buscar.
+- **Limpeza por cenário:** `beforeEach` nas suítes de filmes e séries para evitar conflitos de títulos entre testes.
+- **Conexões SQL:** `executeSQL()` retorna as linhas consultadas, encerra o pool em `finally` e propaga erros para o teste.
+- **Componentes compartilhados:** `page.popup.haveText()` valida mensagens e `page.popup.close()` fecha o popup antes de verificar a listagem.
 
 <a id="arquitetura"></a>
 
@@ -65,22 +82,26 @@ O arquivo de dados contém outros filmes para expansão dos testes; atualmente, 
 ```mermaid
 flowchart LR
     Specs["Cenários E2E"] --> Fixtures["Fixtures do Playwright"]
-    Fixtures --> Pages["Page Objects e Toast"]
+    Fixtures --> Pages["Actions e Popup"]
     Pages --> Web["Zombie+ · Interface"]
     Web --> API["Zombie+ · API"]
     Specs -->|"Prepara lead por HTTP"| API
+    Fixtures --> Client["request.api"]
+    Client -->|"Autentica e prepara filmes e séries"| API
     Specs --> SQL["executeSQL"]
-    SQL -->|"Prepara dados de filmes"| DB[(PostgreSQL)]
+    SQL -->|"Limpa filmes ou séries antes de cada teste"| DB[(PostgreSQL)]
     API --> DB
 ```
 
 | Camada | Responsabilidade | Onde encontrar |
 | --- | --- | --- |
 | Cenários | Descrever ações e resultados esperados de cada fluxo | [`tests/e2e`](tests/e2e) |
-| Page Objects | Centralizar seletores, interações e validações de página | [`tests/pages`](tests/pages) |
-| Fixtures do Playwright | Disponibilizar `page.landing`, `page.login`, `page.movies` e `page.toast` | [`tests/support/index.js`](tests/support/index.js) |
-| Dados de teste | Definir os filmes utilizados nos cenários | [`movies.json`](tests/support/fixtures/movies.json) |
-| Banco de dados | Executar SQL na preparação dos testes | [`database.js`](tests/support/database.js) |
+| Actions / Page Objects | Centralizar seletores, interações e validações de página | [`tests/actions`](tests/actions) |
+| Popup | Validar mensagens e fechar o diálogo | [`Components.js`](tests/actions/Components.js) |
+| Fixtures do Playwright | Disponibilizar `page.leads`, `page.login`, `page.movies`, `page.tvshows`, `page.popup` e `request.api` | [`tests/support/index.js`](tests/support/index.js) |
+| Cliente da API | Obter token, consultar empresas e cadastrar filmes e séries para os testes | [`tests/support/api/index.js`](tests/support/api/index.js) |
+| Dados de teste | Definir os registros, o termo de busca e os resultados esperados | [`movies.json`](tests/support/fixtures/movies.json) e [`tvshows.json`](tests/support/fixtures/tvshows.json) |
+| Banco de dados | Executar SQL e encerrar a conexão após cada chamada | [`database.js`](tests/support/database.js) |
 
 Essa separação permite ajustar uma interação de tela no Page Object e reutilizá-la nos cenários que dependem dela.
 
@@ -92,15 +113,21 @@ zombieplus/
 │   ├── e2e/
 │   │   ├── leads.spec.js          # Fila de espera
 │   │   ├── login.spec.js          # Autenticação administrativa
-│   │   └── movies.spec.js         # Cadastro de filmes
-│   ├── pages/
-│   │   ├── Components.js         # Componente de notificações toast
-│   │   ├── LandingPage.js        # Página inicial e formulário de leads
-│   │   ├── LoginPage.js          # Formulário de login
-│   │   └── MoviesPage.js         # Área administrativa de filmes
+│   │   ├── movies.spec.js         # Cadastro, remoção, validações e busca de filmes
+│   │   └── tvshows.spec.js        # Cadastro, remoção, validações e busca de séries
+│   ├── actions/
+│   │   ├── Components.js         # Validação e fechamento do popup
+│   │   ├── Leads.js              # Página inicial e formulário de leads
+│   │   ├── Login.js              # Login e validação do usuário autenticado
+│   │   ├── Movies.js             # Área administrativa de filmes
+│   │   └── TvShows.js            # Área administrativa de séries
 │   └── support/
+│       ├── api/
+│       │   └── index.js          # Autenticação, empresas, filmes e séries
 │       ├── fixtures/
-│       │   └── movies.json       # Dados dos filmes
+│       │   ├── covers/movies/    # Imagens usadas nos formulários
+│       │   ├── movies.json       # Massa de filmes
+│       │   └── tvshows.json      # Massa de séries
 │       ├── database.js           # Conexão PostgreSQL e execução de SQL
 │       └── index.js              # Fixtures personalizadas do Playwright
 ├── .gitignore
@@ -109,6 +136,43 @@ zombieplus/
 ├── playwright.config.js
 └── README.md
 ```
+
+<a id="massa-de-teste"></a>
+
+## 🗂️ Massa de teste e preparação
+
+Os arquivos JSON seguem a mesma organização:
+
+| Entrada | Uso |
+| --- | --- |
+| `create` | Cadastro pela interface |
+| `to_remove` | Registro criado pela API para remover pela interface |
+| `duplicate` | Registro criado pela API antes de tentar cadastrar o mesmo título |
+| `search.input` | Termo usado na busca |
+| `search.data` | Registros cadastrados pela API antes da busca |
+| `search.outputs` | Títulos esperados após filtrar |
+
+Filmes e séries usam `title`, `overview`, `company`, `release_year` e `featured`. Séries também exigem `seasons`. Nos cadastros pela interface, `cover` indica o arquivo a partir de `tests/support/fixtures`; os helpers de cadastro pela API preparam os registros sem enviar capa.
+
+A massa de séries contém títulos fictícios e reutiliza `covers/movies/wwz.png` para testar o upload. Não é necessário baixar capas adicionais para os cenários atuais. As empresas indicadas nos JSONs precisam existir no banco; a massa de séries utiliza `Netflix`.
+
+Exemplo de preparação usado nos testes:
+
+```js
+const tvshows = data.search
+
+await request.api.setToken()
+
+for (const tvshow of tvshows.data) {
+    await request.api.postTvShow(tvshow)
+}
+```
+
+`setToken()` autentica em `/sessions` e armazena o Bearer token na instância de `Api` daquele teste. O login pela interface é uma etapa separada. `getCompanyByName()` resolve o nome da empresa para seu ID antes de enviar os dados em `multipart`; o Playwright monta o cabeçalho desse envio.
+
+Antes de cada cenário, `movies.spec.js` executa `DELETE FROM movies` e `tvshows.spec.js` executa `DELETE FROM tvshows`. Essa limpeza remove **todos os registros da respectiva tabela** e deve ser usada em um banco dedicado aos testes. Cada teste prepara os dados de que precisa.
+
+A configuração mantém os testes de cada arquivo em sequência (`fullyParallel: false`). Evite executar a mesma suíte simultaneamente contra o mesmo banco: a limpeza de um teste pode remover a massa de outro. Adicionar projetos de navegador ou paralelismo dentro do arquivo exige rever essa estratégia de isolamento.
 
 <a id="instalacao"></a>
 
@@ -228,6 +292,19 @@ Para executar por funcionalidade:
 npx playwright test tests/e2e/leads.spec.js
 npx playwright test tests/e2e/login.spec.js
 npx playwright test tests/e2e/movies.spec.js
+npx playwright test tests/e2e/tvshows.spec.js
+```
+
+Para executar os dois catálogos em sequência:
+
+```bash
+npx playwright test tests/e2e/movies.spec.js tests/e2e/tvshows.spec.js --workers=1
+```
+
+Para conferir os cenários descobertos sem executá-los:
+
+```bash
+npx playwright test --list
 ```
 
 Para filtrar pelo nome de um teste:
@@ -253,22 +330,31 @@ A configuração em [`playwright.config.js`](playwright.config.js) utiliza:
 - **Duas novas tentativas em CI** e nenhuma nova tentativa automática localmente.
 - **Trace na primeira nova tentativa**, quando ela ocorrer.
 - **Um worker em CI**; localmente, a quantidade segue o padrão do Playwright.
+- **`fullyParallel: false`**: testes de um mesmo arquivo em sequência; arquivos diferentes ainda podem usar workers distintos.
 
-O servidor da aplicação deve ser iniciado manualmente: a opção `webServer` está comentada. As URLs locais estão definidas nos Page Objects e no teste que prepara dados pela API.
+O servidor da aplicação deve ser iniciado manualmente: a opção `webServer` está comentada. As URLs locais estão definidas nas actions, no cliente da API e no teste de preparação de leads. `baseURL` também permanece comentado.
+
+Para exibir apenas o progresso e o resultado no terminal, use `--reporter=line`. Essa opção substitui o relatório HTML naquela execução.
 
 Os diretórios `playwright-report/`, `test-results/` e `node_modules/` são ignorados pelo Git.
 
 <a id="estado-atual"></a>
 
-## 🚧 Estado atual
+## ✅ Estado atual
 
-Há ajustes pendentes no fluxo de login e de filmes:
+O projeto contém **22 testes em 4 arquivos**, confirmados com `npx playwright test --list` em **28/09/2026**.
 
-- Alinhar as chamadas de verificação de login com os métodos disponíveis nos Page Objects (`isLoggedin` e `isLoggedIn`).
-- Alinhar a chamada `create(movie)` com os parâmetros atualmente recebidos por `MoviesPage.create`.
-- Revisar seletores e mensagens esperadas conforme a interface da aplicação.
+Na validação local da implementação de séries, em **28/09/2026**, os **10 testes de filmes e séries passaram** no Chromium, com um worker:
 
-Esses pontos podem impedir a conclusão dos cenários correspondentes e fazem parte da evolução da automação.
+```bash
+npx playwright test tests/e2e/movies.spec.js tests/e2e/tvshows.spec.js --workers=1 --reporter=line
+```
+
+Esse resultado se refere aos dois catálogos; os testes de leads e login não fizeram parte dessa execução. A listagem de 22 testes confirma sua descoberta, não a aprovação da suíte inteira.
+
+As pendências anteriores de nomenclatura foram resolvidas: o login utiliza `isLoggedIn()` e o cadastro de filmes recebe `create(movie)`. A estrutura atual de Page Objects está em `tests/actions`.
+
+A cobertura atual utiliza apenas Chromium. Firefox, WebKit e perfis móveis continuam comentados na configuração. A aplicação, os dados iniciais de empresas e o administrador precisam estar disponíveis no ambiente local.
 
 ## 💡 Problemas comuns
 
@@ -292,6 +378,12 @@ Esses pontos podem impedir a conclusão dos cenários correspondentes e fazem pa
 | Requisições à API falham | Confira se a API está iniciada na porta 3333 e consegue acessar o banco. |
 | Conexão PostgreSQL recusada | Verifique o Docker, o contêiner e o mapeamento da porta 5432. |
 | Banco ou tabela inexistente | Prepare a estrutura e os dados iniciais seguindo as instruções da aplicação. |
+| `401 — Token not provided` | Chame `await request.api.setToken()` antes de usar `postMovie()` ou `postTvShow()`. |
+| Empresa não encontrada | Confira o campo `company` da massa e os nomes cadastrados em `/companies`. |
+| `409 — This content is already registered` | Verifique títulos repetidos na própria massa, a limpeza do `beforeEach` e execuções simultâneas no mesmo banco. |
+| Erro ao montar o `multipart` | Confira se os campos estão definidos; o ano usa `release_year` e séries também exigem `seasons`. |
+| Teste termina durante o preparo da massa | Aguarde as requisições com `for...of` e `await`; `forEach(async ...)` não aguarda os cadastros. |
+| Tabela não encontrada após mensagem de sucesso | Feche o diálogo com `await page.popup.close()` antes de validar a listagem por papel. |
 
 </details>
 
