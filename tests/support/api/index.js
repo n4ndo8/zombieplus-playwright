@@ -17,7 +17,7 @@ export class Api {
 
         expect(response.ok()).toBeTruthy()
         const body = JSON.parse(await response.text())
-        this.token = 'Bearer' + body.token
+        this.token = 'Bearer ' + body.token
     }
 
     async getCompanyByName(companyName) {
@@ -31,10 +31,20 @@ export class Api {
             }
         })
 
-        expect(response.ok()).toBeTruthy()
+        expect(
+            response.ok(),
+            `GET /companies: ${response.status()} - ${await response.text()}`
+        ).toBeTruthy()
 
-        const body = JSON.parse(await response.text())
-        return body.data[0].id
+        const body = await response.json()
+        const company = body.data[0]
+
+        expect(
+            company,
+            `Empresa "${companyName}" não encontrada. Resposta: ${JSON.stringify(body)}`
+        ).toBeDefined()
+
+        return company.id
     }
 
     async postMovie(movie) {
@@ -45,7 +55,6 @@ export class Api {
         const response = await this.request.post('http://localhost:3333/movies', {
             headers: {
                 Authorization: this.token,
-                ContentType: 'multipart/form-data',
                 Accept: 'application/json, text/plain, */*'
             },
             multipart: {
@@ -57,7 +66,10 @@ export class Api {
             }
         })
 
-        expect(response.ok()).toBeTruthy()
+        expect(
+            response.ok(),
+            `POST /movies: ${response.status()} - ${await response.text()}`
+        ).toBeTruthy()
     }
 
 }
