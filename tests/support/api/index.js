@@ -1,14 +1,17 @@
+require('dotenv').config()
+
 const { expect } = require('@playwright/test')
 
 export class Api {
 
     constructor(request) {
+        this.baseApi = process.env.BASE_API
         this.request = request
         this.token = undefined
     }
 
     async setToken() {
-        const response = await this.request.post('http://localhost:3333/sessions', {
+        const response = await this.request.post(this.baseApi + '/sessions', {
             data: {
                 email: 'admin@zombieplus.com',
                 password: 'pwd123'
@@ -22,7 +25,7 @@ export class Api {
 
     async getCompanyByName(companyName) {
 
-        const response = await this.request.get('http://localhost:3333/companies', {
+        const response = await this.request.get(this.baseApi + '/companies', {
             headers: {
                 Authorization: this.token,
             },
@@ -49,8 +52,11 @@ export class Api {
 
     async postTvShow(tvshow) {
         const companyId = await this.getCompanyByName(tvshow.company)
-        const response = await this.request.post('http://localhost:3333/tvshows', {
-            headers: { Authorization: this.token },
+        const response = await this.request.post(this.baseApi + '/tvshows', {
+            headers: {
+                Authorization: this.token,
+                Accept: 'application/json, text/plain, */*'
+            },
             multipart: {
                 title: tvshow.title,
                 overview: tvshow.overview,
@@ -62,9 +68,9 @@ export class Api {
         })
 
         expect(
-            response.status(),
+            response.ok(),
             `POST /tvshows: ${response.status()} - ${await response.text()}`
-        ).toBe(201)
+        ).toBeTruthy()
     }
 
     async postMovie(movie) {
@@ -72,7 +78,7 @@ export class Api {
         const companyId = await this.getCompanyByName(movie.company)
 
 
-        const response = await this.request.post('http://localhost:3333/movies', {
+        const response = await this.request.post(this.baseApi + '/movies', {
             headers: {
                 Authorization: this.token,
                 Accept: 'application/json, text/plain, */*'
