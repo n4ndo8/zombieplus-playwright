@@ -60,6 +60,7 @@ test('deve realizar busca pelo termo zumbi', async ({ page, request }) => {
     }
 
     await page.login.do('admin@zombieplus.com', 'pwd123', 'Admin')
+    await page.movies.tableHave(movies.data.map(movie => movie.title))
     await page.movies.search(movies.input)
     await page.movies.tableHave(movies.outputs)
 })

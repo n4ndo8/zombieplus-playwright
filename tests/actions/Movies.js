@@ -53,9 +53,15 @@ export class Movies {
         await this.page.click('.actions button')
     }
 
-    async tableHave(content) {
-        const rows = this.page.getByRole('row')
-        await expect(rows).toContainText(content)
+    row(title) {
+        return this.page.getByRole('row').filter({ has: this.page.getByRole('img', { name: title, exact: true }) })
+    }
+
+    async tableHave(titles) {
+        await expect(this.page.getByRole('row')).toHaveCount(titles.length)
+        for (const title of titles) {
+            await expect(this.row(title)).toBeVisible()
+        }
     }
 
     async alertHaveText(target) {
